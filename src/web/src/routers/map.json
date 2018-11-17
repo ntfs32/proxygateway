@@ -1,0 +1,15 @@
+[
+    {
+        "root": {
+            "path": "/",
+            "component": "index"
+        }
+    },
+    {
+        "404": {
+            "path": "*",
+            "component": "404"
+        }
+    }
+
+]
