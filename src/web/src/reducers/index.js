@@ -2,10 +2,10 @@
 
 import { combineReducers } from 'redux'
 
-import number from './number'
+import domain from './domain'
 import user from './user'
 
 export default combineReducers({
-    number,
+    domain,
     user
 })

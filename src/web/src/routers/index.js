@@ -8,28 +8,26 @@ import DevTools from '../components/common/devtools'
 import { userIsAuthenticatedRedir, userIsNotAuthenticatedRedir } from '../components/common/auth'
 
 
-const createComponent = (component) => {
+export const createComponent = (component) => {
     return asyncComponent(() => import(`../components/${component}`))
 }
+export const history = createBrowserHistory()
 
 const Login = userIsNotAuthenticatedRedir(createComponent('pages/login'))
-const Protected = userIsAuthenticatedRedir(createComponent('pages/dashboard'))
+const Dashboard = userIsAuthenticatedRedir(createComponent('pages/dashboard'))
+const NotFound = createComponent('pages/notFound')
 
 class classBrowserRouter extends Component {
-    constructor(args) {
-        super(args)
-        this.history = createBrowserHistory()
-    }
-
     render() {
         const { store } = this.props
         return (
             <Provider store={store}>
-                <Router history={this.history}>
+                <Router history={history}>
                     <div>
                         <Switch>
-                            <Route exact path='/' component={Protected} />
                             <Route path='/login' component={Login} />
+                            <Route extra path='/' component={Dashboard} />
+                            <Route component={NotFound} />
                         </Switch>
                         <DevTools />
                     </div>

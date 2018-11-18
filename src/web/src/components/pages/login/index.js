@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Form, Icon, Input, Button, Checkbox } from 'antd'
+import { Form, Icon, Input, Button } from 'antd'
 
 import * as userActions from '../../../actions/user'
 import './index.css';
 
 const FormItem = Form.Item;
 class Login extends Component {
-  constructor (props) {
-    super(props)
-  }
-
 
   AddCount = () => {
     this.props.numberActions.addCount(1)
@@ -53,7 +49,7 @@ class Login extends Component {
             })(
               <Checkbox className='login-form-remember'>Remember me</Checkbox>
             )} */}
-            <a className='login-form-forgot' href=''>Forgot password</a>
+            <a className='login-form-forgot' href='#forget'>Forgot password</a>
             <Button size='large' type='primary' htmlType='submit' className='login-form-button'>
               登陆
             </Button>

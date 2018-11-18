@@ -1,6 +1,6 @@
 import * as actionTypes from '../constants/user'
 import service from '../services'
-console.log(service.login)
+
 export function loginAction(data) {
     return {
         type: actionTypes.login,
@@ -8,9 +8,9 @@ export function loginAction(data) {
     }
 }
 
-export function logoutAction(data) {
+export function logoutAction() {
     return {
         type: actionTypes.logout,
-        // payload: logout()
+        payload: service.logout()
     }
 }

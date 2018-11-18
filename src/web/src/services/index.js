@@ -22,7 +22,7 @@ const gen = params => {
     }
 
     return function (data) {
-        if(requestParams.headers['Content-Type'] === 'application/x-www-form-urlencoded'){
+        if( _.get(requestParams, 'headers.Content-Type', false) && requestParams.headers['Content-Type'] === 'application/x-www-form-urlencoded'){
             data = queryString.stringify(data)
         }
         return request({...requestParams, data})

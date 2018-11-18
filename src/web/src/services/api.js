@@ -9,10 +9,13 @@ export default {
         }
     },
 
-    logout: 'POST /logout',
+    logout: '/logout',
     // 域名
     addDomain: 'POST /domain/add',
     removeDomain: 'POST /domain/delete',
     updateDomain: 'POST /domain/update',
     getAllDomain: 'POST /domain/all',
+
+    // service
+    getServiceListByDomainId: 'POST /service/list'
 }
