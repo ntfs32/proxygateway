@@ -1,19 +1,20 @@
 import { createStore } from 'redux'
 import { compose, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
 
+import DevTools from '../components/common/devtools'
 import reducer from '../reducers'
-
-const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+import middlewares from '../middlewares'
 
 function configStore(initState){
     return createStore(
         reducer,
         initState,
-        composeEnhancer(
-            applyMiddleware(thunk)
+        compose(
+            applyMiddleware.apply(this, middlewares),
+            // window.devToolsExtension ? window.devToolsExtension() : f => f, // redux tools with broswer tools
+            DevTools.instrument() //redux tools with selfs,
         )
     )
 }
 
-export default configStore() 
+export const store = configStore() 

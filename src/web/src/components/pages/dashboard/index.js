@@ -3,14 +3,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Button } from 'antd'
 
-import * as numberActions from '../../actions/number'
-import './index.css';
+import * as numberActions from '../../../actions/number'
 
 class App extends Component {
-  constructor (props) {
-    super(props)
-  }
-
 
   AddCount = () => {
     this.props.numberActions.addCount(1)
@@ -21,8 +16,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <p>
-            Edit <code>containers/index/index.js</code> and save to reload.
-            text:{this.props.number.text}
+            Dashboard
           </p>
           <p>
             count: {this.props.number.count}

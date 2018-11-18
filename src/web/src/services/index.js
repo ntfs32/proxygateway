@@ -1,24 +1,31 @@
 import request from '../utils/request'
-import { apiPrefix } from ' ../utils/config'
-
+import { apiPrefix } from '../utils/config'
+import  _ from 'lodash'
+import queryString from 'querystring'
 import api from './api'
 
 const gen = params => {
-    let url = apiPrefix + params
-    let method = 'GET'
-
-    const paramsArray = params.split(' ')
-    if (paramsArray.length === 2) {
-        method = paramsArray[0]
-        url = apiPrefix + paramsArray[1]
+    let requestParams = {
+        url: apiPrefix + params,
+        method: 'GET',
+    }
+    if(_.isObject(params)) {
+        requestParams = params
+        requestParams.url = !_.isUndefined(requestParams.url) ? apiPrefix + requestParams.url : requestParams.url
+        requestParams.method = !_.isUndefined(requestParams.method) ? requestParams.method : 'GET'
+    } else{
+        const paramsArray = params.split(' ')
+        if (paramsArray.length === 2) {
+            requestParams.method = paramsArray[0]
+            requestParams.url = apiPrefix + paramsArray[1]
+        }
     }
 
     return function (data) {
-        return request({
-            url,
-            data,
-            method
-        })
+        if(requestParams.headers['Content-Type'] === 'application/x-www-form-urlencoded'){
+            data = queryString.stringify(data)
+        }
+        return request({...requestParams, data})
     }
 }
 
@@ -27,5 +34,4 @@ for (const key in api) {
     APIFunction[key] = gen(api[key])
 }
 
-
-module.exports = APIFunction
+export default APIFunction

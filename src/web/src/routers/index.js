@@ -1,36 +1,45 @@
-import React, {Component} from 'react'
-import { Router, Route, Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Router, Route, Switch } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import { Provider } from 'react-redux'
+import { Provider, connect } from 'react-redux'
 
 import asyncComponent from '../components/asyncComponent'
+import DevTools from '../components/common/devtools'
+import { userIsAuthenticatedRedir, userIsNotAuthenticatedRedir } from '../components/common/auth'
+
 
 const createComponent = (component) => {
-    return asyncComponent(() => import(`../${component}`))
+    return asyncComponent(() => import(`../components/${component}`))
 }
 
-export default class classBrowserRouter extends Component {
+const Login = userIsNotAuthenticatedRedir(createComponent('pages/login'))
+const Protected = userIsAuthenticatedRedir(createComponent('pages/dashboard'))
+
+class classBrowserRouter extends Component {
     constructor(args) {
         super(args)
         this.history = createBrowserHistory()
     }
+
     render() {
         const { store } = this.props
         return (
             <Provider store={store}>
                 <Router history={this.history}>
                     <div>
-                        <ul>
-                            <li><Link to='/'>首页</Link></li>
-                            <li><Link to='/about'>about</Link></li>
-                        </ul>
-                        <hr/>
-                        <Route exact path='/' component={createComponent('containers/index')}/>
-                        <Route path='/about' component={createComponent('containers/about')}/>
-                        {/* <Route path='*' component={createComponent('containers/notFound')}/> */}
+                        <Switch>
+                            <Route exact path='/' component={Protected} />
+                            <Route path='/login' component={Login} />
+                        </Switch>
+                        <DevTools />
                     </div>
                 </Router>
             </Provider>
         )
     }
 }
+
+const mapStateToProps = state => ({
+    user: state.number
+})
+export default connect(mapStateToProps, { })(classBrowserRouter)
