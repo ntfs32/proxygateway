@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Form, Button, Input, InputNumber, Select, Spin } from 'antd'
+import { Form, Button, Input, Divider, InputNumber, Select, Spin } from 'antd'
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
 
@@ -36,10 +36,13 @@ class DomainEdit extends Component {
             api: this.props.domainActions.getApiAction
         }
         this.formFileds = {
-            domain: ['id','name'],
-            service: ['id', 'name', 'host', 'description'],
-            server: ['id', 'ip', 'port', 'protocol', 'weight', 'description'],
-            api: ['id', 'request_uri', 'original_uri', 'uri_limit_seconds', 'uri_limit_times', 'ip_uri_limit_seconds', 'ip_uri_limit_times', 'description' ]
+            domain: ['name'],
+            service: ['name', 'host', 'description'],
+            server: ['ip', 'port', 'protocol', 'weight', 'description'],
+            api: ['request_uri', 'original_uri', 'uri_limit_seconds', 'uri_limit_times', 'ip_uri_limit_seconds', 'ip_uri_limit_times', 'description' ]
+        }
+        this.state = {
+            formData: {}
         }
     }
 
@@ -58,7 +61,9 @@ class DomainEdit extends Component {
         let index = _.findIndex(this.props.domain[`${this.formType}List`], item => {
             return _.toString(item.id) === this.id
         })
-        this.props.form.setFieldsValue(_.pick(_.get(this.props.domain, `${this.formType}List.${index}`, {}), this.formFileds[this.formType]))
+        let formData = _.get(this.props.domain, `${this.formType}List.${index}`, {})
+        this.setState({formData})
+        this.props.form.setFieldsValue(_.pick(formData, this.formFileds[this.formType]))
     }
 
     handleSubmit = (e) => {
@@ -67,23 +72,41 @@ class DomainEdit extends Component {
             if (!err) {
                 let values = _.clone(fieldsValue)
                 _.unset(values, 'id')
-                values[`${this.formType}_id`] = fieldsValue.id
+                if (this.actionType === 'edit' ) {
+                    console.log(_.get(this.state, 'formData'))
+                    values[`${this.formType}_id`] = _.get(this.state, 'formData.id')
+                } else {
+                    let parent_id = _.get(this.props, 'match.params.parent_id')
+                    switch (this.formType) {
+                        case 'service':
+                            values['domain_id'] = parent_id
+                            break
+                        case 'server':
+                            values['service_id'] = parent_id
+                            break
+                        case 'api':
+                            values['service_id'] = parent_id
+                            break
+                        default:
+                            break
+                    }
+                }
                 console.log(values)
                 let action = `${this.actionType === 'edit' ? 'update' : 'add'}${_.upperFirst(this.formType)}Action`
                 this.props.domainActions[action](values).then(res => {
-                    this.props.history.push('/domain')
+                    this.props.history.goBack()
                 })
             }
         })
     }
 
     getFormWithCommon = (dom) => {
-        const { getFieldDecorator } = this.props.form
+        // const { getFieldDecorator } = this.props.form
         return (
             <div>
                 <Spin spinning={this.props.domain.isLoading} delay={100}>
                     <Form onSubmit={this.handleSubmit}>
-                        {this.actionType === 'edit' ? <FormItem
+                        {/* {this.actionType === 'edit' ? <FormItem
                             {...formItemLayout}
                             style={{display: 'none'}}
                             label='ID'
@@ -95,10 +118,12 @@ class DomainEdit extends Component {
                             })(
                                 <Input />
                             )}
-                        </FormItem> : <span />}
+                        </FormItem> : <span />} */}
                         {dom}
                         <FormItem {...tailFormItemLayout}>
                             <Button type='primary' htmlType='submit'>{this.actionType === 'edit' ? '保存' : '新增'}</Button>
+                            <Divider type="vertical" />
+                            <Button type='default' onClick={()=>{this.props.history.goBack()}}>{'取消'}</Button>
                         </FormItem>
                     </Form>
                 </Spin>

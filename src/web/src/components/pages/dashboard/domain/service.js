@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Divider, Tooltip, Progress } from 'antd'
+import { Table, Divider, Tooltip, Progress, Col, Row, Button } from 'antd'
 import { withRouter, Link } from 'react-router-dom'
 import _ from 'lodash'
 
@@ -12,19 +12,17 @@ class ServiceListByID extends Component {
     constructor(props) {
         super(props)
         console.log('domain pages.')
-        this.state = {
-            collapsed: false,
-        }
+        this.domain_id = _.get(this.props.match, 'params.domain_id', null)
     }
 
     componentWillMount() {
-        const { match } = this.props
-        const domain_id = _.get(match, 'params.domain_id', null)
-        this.props.domainActions.getServiceAction(domain_id)
+        this.props.domainActions.getServiceAction(this.domain_id)
     }
 
     deleteAction = (id) => {
-        this.props.domainActions.removeServiceAction(id)
+        this.props.domainActions.removeServiceAction(id).then(() => {
+            this.props.domainActions.getServiceAction(this.domain_id)
+        })
     }
 
     render() {
@@ -51,15 +49,15 @@ class ServiceListByID extends Component {
             render: (text, record) => {
                 let serverCount = 0
                 let statusObj = {} 
-                _.map(_.split(record.status, ','), o =>{
+                record.status !== 'no backend servers' ? _.map(_.split(record.status, ','), o =>{
                     let item = _.split(o, ' ')
                     serverCount += _.toInteger(item[1])
                     statusObj[item[0]] = _.toInteger(item[1])
-                })
+                }) : statusObj = {up:0,down:0}
                 console.log(statusObj.up / serverCount * 100)
                 return (
                     <Tooltip placement='topLeft' title={`活跃：${statusObj.up}, 异常：${statusObj.down}`} arrowPointAtCenter>
-                        <Progress type='circle' percent={statusObj.up / serverCount * 100} width={40} status={statusObj.up / serverCount === 1? 'success' : 'exception'} />
+                        <Progress type='circle' percent={serverCount ? statusObj.up / serverCount * 100 : 0} width={40} status={statusObj.up / serverCount === 1? 'success' : 'exception'} />
                     </Tooltip>
                 )
             }
@@ -80,11 +78,25 @@ class ServiceListByID extends Component {
         }]
         return (
             <div>
-                <Table rowKey={'id'}
-                    columns={columns}
-                    dataSource={serviceList}
-                    loading={isLoading}
-                />
+                <Row>
+                    <Col style={{ margin: '0 0px 10px', float: 'right' }}>
+                        <Button
+                            type='primary'
+                            onClick={() => {
+                                this.props.history.push(`/domain/add/service/${this.domain_id}`)
+                            }}
+                        >
+                            新增
+                        </Button>
+                    </Col>
+                </Row>
+                <div>
+                    <Table rowKey={'id'}
+                        columns={columns}
+                        dataSource={serviceList}
+                        loading={isLoading}
+                    />
+                </div>
             </div>
         )
     }

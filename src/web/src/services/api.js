@@ -6,7 +6,7 @@ export default {
     logout: '/logout',
 
     // domain
-    getAllDomain: 'POST /domain/all',
+    getAllDomain: 'POST /domain/all/1',
     getOneDomain: 'POST /domain/get',
     addDomain: 'POST /domain/add',
     removeDomain: 'POST /domain/delete',
@@ -16,7 +16,7 @@ export default {
     getServiceListByDomainId: 'POST /service/list',
     getOneServiceByServiceId: 'POST /service/get',
     addService: 'POST /service/add',
-    removeService: 'POST /service/remove',
+    removeService: 'POST /service/delete',
     updateService: 'POST /service/edit',
 
     
@@ -25,13 +25,13 @@ export default {
     getServerListByServiceId: 'POST /server/list',
     getOneServerByServerId: 'POST /server/get',
     addServer: 'POST /server/add',
-    removeServer: 'POST /server/remove',
+    removeServer: 'POST /server/delete',
     updateServer: 'POST /server/edit',
 
     // api
     getApiListByServiceId: 'POST /api/list',
     getOneApiByApiId: 'POST /api/get',
     addApi: 'POST /api/add',
-    removeApi: 'POST /api/remove',
+    removeApi: 'POST /api/delete',
     updateApi: 'POST /api/edit',
 }

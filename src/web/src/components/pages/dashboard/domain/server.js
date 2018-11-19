@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Divider, Progress, Tooltip } from 'antd'
+import { Table, Divider, Progress, Tooltip, Col, Row, Button } from 'antd'
 import { withRouter, Link } from 'react-router-dom'
 import _ from 'lodash'
 
@@ -12,19 +12,17 @@ class ServerByServiceID extends Component {
     constructor(props) {
         super(props)
         console.log('domain pages.')
-        this.state = {
-            collapsed: false,
-        }
+        this.service_id = _.get(this.props.match, 'params.service_id', null)
     }
 
     componentWillMount() {
-        const { match } = this.props
-        const service_id = _.get(match, 'params.service_id', null)
-        this.props.domainActions.getServerAction(service_id)
+        this.props.domainActions.getServerAction(this.service_id)
     }
 
     deleteAction = (id) => {
-        this.props.domainActions.removeServerAction(id)
+        this.props.domainActions.removeServerAction(id).then(() => {
+            this.props.domainActions.getServerAction(this.service_id)
+        })
     }
 
     render() {
@@ -79,11 +77,25 @@ class ServerByServiceID extends Component {
         }]
         return (
             <div>
-                <Table rowKey={'id'}
-                    columns={columns}
-                    dataSource={serverList}
-                    loading={isLoading}
-                />
+                <Row>
+                    <Col style={{ margin: '0 0px 10px', float: 'right' }}>
+                        <Button
+                            type='primary'
+                            onClick={() => {
+                                this.props.history.push(`/domain/add/server/${this.service_id}`)
+                            }}
+                        >
+                            新增
+                        </Button>
+                    </Col>
+                </Row>
+                <div>
+                    <Table rowKey={'id'}
+                        columns={columns}
+                        dataSource={serverList}
+                        loading={isLoading}
+                    />
+                </div>
             </div>
         )
     }

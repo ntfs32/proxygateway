@@ -12,19 +12,17 @@ class ServerByServiceID extends Component {
     constructor(props) {
         super(props)
         console.log('api pages.')
-        this.state = {
-            collapsed: false,
-        }
+        this.service_id = _.get(this.props.match, 'params.service_id', null)
     }
 
     componentWillMount() {
-        const { match } = this.props
-        const service_id = _.get(match, 'params.service_id', null)
-        this.props.domainActions.getApiAction(service_id)
+        this.props.domainActions.getApiAction(this.service_id)
     }
 
     deleteAction = (id) => {
-        this.props.domainActions.removeApiAction(id)
+        this.props.domainActions.removeApiAction(id).then(() => {
+            this.props.domainActions.getApiAction(this.service_id)
+        })
     }
 
     render() {
@@ -74,17 +72,18 @@ class ServerByServiceID extends Component {
         }]
         return (
             <div>
-                <div>
-                    <Button
-                        style={{ marginBottom: '20px' }}
-                        type='primary'
-                        onClick={() => {
-                            this.props.history.push('/domain/add/api')
-                        }}
-                    >
-                        新增
-                    </Button>
-                </div>
+                <Row>
+                    <Col style={{ margin: '0 0px 10px', float: 'right' }}>
+                        <Button
+                            type='primary'
+                            onClick={() => {
+                                this.props.history.push(`/domain/add/api/${this.service_id}`)
+                            }}
+                        >
+                            新增
+                        </Button>
+                    </Col>
+                </Row>
                 <div>
                     <Table rowKey={'id'}
                         columns={columns}

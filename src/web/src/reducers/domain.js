@@ -1,4 +1,5 @@
 import { PENDING, FULFILLED } from 'redux-promise-middleware'
+import _ from 'lodash'
 
 import * as actionTypes from '../constants/domain'
 
@@ -27,9 +28,10 @@ export default function domain (state = initialState, action) {
         case `${actionTypes.getServiceListByDomainId}_${PENDING}`:
             return {...state, isLoading: true}
         case `${actionTypes.getServiceListByDomainId}_${FULFILLED}`:
+            console.log(action.payload.info)
             return {
                 ...state,
-                serviceList: action.payload.info || [],
+                serviceList: !_.isEmpty(action.payload.info) ? action.payload.info : [],
                 isLoading: false
             }
         
@@ -39,7 +41,7 @@ export default function domain (state = initialState, action) {
         case `${actionTypes.getServerListByServiceId}_${FULFILLED}`:
             return {
                 ...state,
-                serverList: action.payload.info || [],
+                serverList: !_.isEmpty(action.payload.info) ? action.payload.info : [],
                 isLoading: false
             }
 
@@ -49,7 +51,7 @@ export default function domain (state = initialState, action) {
         case `${actionTypes.getApiListByServiceId}_${FULFILLED}`:
             return {
                 ...state,
-                apiList: action.payload.info || [],
+                apiList: !_.isEmpty(action.payload.info) ? action.payload.info : [],
                 isLoading: false
             }
         

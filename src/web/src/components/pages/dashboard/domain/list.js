@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Divider } from 'antd'
+import { Table, Divider, Row, Col, Button } from 'antd'
 import { withRouter, Link } from 'react-router-dom'
 
 import * as domainActions from '../../../../actions/domain'
@@ -21,7 +21,9 @@ class DomainListPage extends Component {
     }
 
     deleteAction = (id) => {
-        this.props.domainActions.removeDomainAction(id)
+        this.props.domainActions.removeDomainAction(id).then(() => {
+            this.props.domainActions.getAllAction()
+        })
     }
 
     render() {
@@ -49,11 +51,25 @@ class DomainListPage extends Component {
         }]
         return (
             <div>
-                <Table rowKey={'id'}
-                    columns={columns}
-                    dataSource={domainList}
-                    loading={isLoading}
-                />
+                <Row>
+                    <Col style={{ margin: '0 0px 10px', float: 'right' }}>
+                        <Button
+                            type='primary'
+                            onClick={() => {
+                                this.props.history.push(`/domain/add/domain/-1`)
+                            }}
+                        >
+                            新增
+                        </Button>
+                    </Col>
+                </Row>
+                <div>
+                    <Table rowKey={'id'}
+                        columns={columns}
+                        dataSource={domainList}
+                        loading={isLoading}
+                    />
+                </div>
             </div>
         )
     }

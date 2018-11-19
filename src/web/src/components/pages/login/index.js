@@ -27,6 +27,7 @@ class Login extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className='login'>
+        <h3 style={{ color: 'white', margin: '0 0 20px'}}>Proxy Gateway</h3>
         <Form onSubmit={this.handleSubmit} className='login-form'>
           <FormItem>
             {getFieldDecorator('username', {
@@ -43,17 +44,10 @@ class Login extends Component {
             )}
           </FormItem>
           <FormItem>
-            {/* {getFieldDecorator('remember', {
-              valuePropName: 'checked',
-              initialValue: true,
-            })(
-              <Checkbox className='login-form-remember'>Remember me</Checkbox>
-            )} */}
             <a className='login-form-forgot' href='#forget'>Forgot password</a>
             <Button size='large' type='primary' htmlType='submit' className='login-form-button'>
               登陆
             </Button>
-            {/* Or <a href=''>register now!</a> */}
           </FormItem>
         </Form>
       </div>

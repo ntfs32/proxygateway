@@ -20,7 +20,7 @@ class Doamin extends Component {
                     <Route path={`${this.props.match.url}/service/:domain_id/api/:service_id`} component={ApiList} />
                     <Route path={`${this.props.match.url}/service/:domain_id/server/:service_id`} component={ServerList} />
                     <Route path={`${this.props.match.url}/edit/:type/:id`} component={EditForm} />
-                    <Route path={`${this.props.match.url}/add/:type`} component={EditForm} />                    
+                    <Route path={`${this.props.match.url}/add/:type/:parent_id`} component={EditForm} />                    
                     <Route path={`${this.props.match.url}/service/:domain_id`} component={ServiceList} />
                     <Route component={DomainList} />
                 </Switch>

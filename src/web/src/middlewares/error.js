@@ -1,11 +1,16 @@
-import isPromise from 'is-promise';
-import _ from 'lodash';
+import isPromise from 'is-promise'
+import _ from 'lodash'
+import { message } from 'antd'
 
 export default function errorMiddleware() {
     return next => action => {
         const types = {
             FOO: true,
         };
+        if (action.payload.errno !== 0) {
+            message.error('fetch error')
+            action.payload.info = {}
+        }
 
         // If not a promise, continue on
         if (!isPromise(action.payload)) {

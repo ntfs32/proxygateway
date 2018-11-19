@@ -123,7 +123,7 @@ export function removeServiceAction(service_id) {
 export function removeServerAction(server_id) {
     return {
         type: actionTypes.removeServer,
-        payload: service.removeServer(server_id)
+        payload: service.removeServer({server_id})
     }
 }
 export function removeApiAction(api_id) {
