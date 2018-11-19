@@ -6,11 +6,11 @@ import { withRouter, Link } from 'react-router-dom'
 
 import * as domainActions from '../../../../actions/domain'
 
-class DomainList extends Component {
+class DomainListPage extends Component {
 
     constructor(props) {
     super(props)
-        console.log('domain pages.')
+        console.log(this.props)
         this.state ={
             collapsed: false,
         }
@@ -20,24 +20,30 @@ class DomainList extends Component {
         this.props.domainActions.getAllAction()
     }
 
+    deleteAction = (id) => {
+        this.props.domainActions.removeDomainAction(id)
+    }
+
     render() {
-        const { list, isLoading } = this.props.domain
+        const { domainList, isLoading } = this.props.domain
         const columns = [{
+            title: 'Id',
+            key: 'id',
+            dataIndex: 'id'
+        }, {
             title: 'Name',
             dataIndex: 'name',
             key: 'name'
-        },{
-        title: 'Id',
-        key: 'id',
-        dataIndex: 'id'
         }, {
         title: 'Action',
         key: 'action',
         render: (text, record) => (
             <span>
-            <Link to={`${this.props.match.url}/service/${record.id}`}>编辑</Link>
+            <Link to={`${this.props.match.url}/service/${record.id}`}>管理</Link>
             <Divider type="vertical" />
-            <a href="javascript:;">删除</a>
+            <Link to={`/domain/edit/domain/${record.id}`}>编辑</Link>
+            <Divider type="vertical" />
+            <a onClick={this.deleteAction.bind(this, record.id)} href="#delete">删除</a>
             </span>
         ),
         }]
@@ -45,7 +51,7 @@ class DomainList extends Component {
             <div>
                 <Table rowKey={'id'}
                     columns={columns}
-                    dataSource={list}
+                    dataSource={domainList}
                     loading={isLoading}
                 />
             </div>
@@ -64,4 +70,4 @@ function mapDispatchToProps(dispatch) {
         domainActions: bindActionCreators(domainActions, dispatch)
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DomainList))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DomainListPage))

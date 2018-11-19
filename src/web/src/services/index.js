@@ -22,9 +22,10 @@ const gen = params => {
     }
 
     return function (data) {
-        if( _.get(requestParams, 'headers.Content-Type', false) && requestParams.headers['Content-Type'] === 'application/x-www-form-urlencoded'){
-            data = queryString.stringify(data)
-        }
+        // 本项目post数据目前非json
+        requestParams.headers = {}
+        requestParams.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        data = queryString.stringify(data)
         return request({...requestParams, data})
     }
 }

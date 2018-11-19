@@ -4,21 +4,56 @@ import * as actionTypes from '../constants/domain'
 
 
 let initialState = {
-    list: [],
+    domainList: [],
+    serviceList: [],
+    serverList: [],
+    apiList: [],
     isLoading: false
 }
 
 export default function domain (state = initialState, action) {
     switch (action.type) {
+        // get domain list 
         case `${actionTypes.getAllDomain}_${PENDING}`:
             return {...state, isLoading: true}
         case `${actionTypes.getAllDomain}_${FULFILLED}`:
             return {
                 ...state,
-                list: action.payload.info || [],
+                domainList: action.payload.info || [],
+                isLoading: false
+            }
+        
+        // get service list by domain id
+        case `${actionTypes.getServiceListByDomainId}_${PENDING}`:
+            return {...state, isLoading: true}
+        case `${actionTypes.getServiceListByDomainId}_${FULFILLED}`:
+            return {
+                ...state,
+                serviceList: action.payload.info || [],
+                isLoading: false
+            }
+        
+        // get server list by service id
+        case `${actionTypes.getServerListByServiceId}_${PENDING}`:
+            return {...state, isLoading: true}
+        case `${actionTypes.getServerListByServiceId}_${FULFILLED}`:
+            return {
+                ...state,
+                serverList: action.payload.info || [],
                 isLoading: false
             }
 
+        // get api list by service id
+        case `${actionTypes.getApiListByServiceId}_${PENDING}`:
+            return {...state, isLoading: true}
+        case `${actionTypes.getApiListByServiceId}_${FULFILLED}`:
+            return {
+                ...state,
+                apiList: action.payload.info || [],
+                isLoading: false
+            }
+        
+        
         default:
             return state
     }

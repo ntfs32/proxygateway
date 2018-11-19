@@ -19,11 +19,11 @@ export default function user (state = initialState, action) {
             localStorage.setItem('token', _.get(loginInfo, 'token'))
             return {...state, data: loginInfo }
 
-        // case `${actionTypes.logout}_${PENDING}`:
-        //     return {...state, isLoading: true}
+        case `${actionTypes.logout}_${PENDING}`:
+            return {...state}
         case `${actionTypes.logout}_${FULFILLED}`:
             localStorage.removeItem('token')
-            return {...state, data: null }
+            return {...state, data: null, isLoading: false }
         default:
             return state
     }

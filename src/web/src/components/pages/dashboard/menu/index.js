@@ -31,10 +31,6 @@ class DashboardMenu extends Component {
                 defaultSelectedKeys={['/proxy']}
                 selectedKeys={this.state.selectKeys}
                 mode='inline'>
-                <Menu.Item key='/proxy'>
-                    <Icon type='pie-chart' />
-                    <span>代理设置</span>
-                </Menu.Item>
                 <Menu.Item key='/domain'>
                     <Icon type='desktop' />
                     <span>域名管理</span>

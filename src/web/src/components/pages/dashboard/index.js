@@ -31,6 +31,7 @@ class Dashboard extends Component {
   }
 
   render() {
+    console.log(this.props)
     const userMenu = (
       <Menu>
         <Menu.Item key="0">
@@ -90,4 +91,4 @@ function mapDispatchToProps(dispatch) {
     userActions: bindActionCreators(userActions, dispatch)
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)((Dashboard));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Dashboard));
