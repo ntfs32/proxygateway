@@ -8,4 +8,4 @@ import { store } from './store'
 
 ReactDOM.render(<App store={store} />, document.getElementById('app'));
 
-serviceWorker.unregister();
+serviceWorker.register();
