@@ -6,7 +6,7 @@ export default {
     logout: '/logout',
 
     // domain
-    getAllDomain: 'POST /domain/all/1',
+    getAllDomain: 'POST /domain/all',
     getOneDomain: 'POST /domain/get',
     addDomain: 'POST /domain/add',
     removeDomain: 'POST /domain/delete',
