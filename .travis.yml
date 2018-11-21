@@ -7,8 +7,16 @@ install:
 - yarn
 script:
 - yarn build
+- tar zcf server.tar.gz --exclude=src/web/node_modules/ *
 after_script:
 - sh deploy.sh
 before_install:
 - openssl aes-256-cbc -K $encrypted_b19bf508137c_key -iv $encrypted_b19bf508137c_iv
   -in id_rsa.enc -out ./id_rsa -d
+deploy:
+  provider: releases
+  api_key:
+    secure: dNyQkLsZCYVwDxFNGwxLnEO+DdGdQgyeFV6qWAVhuWEuZNrGhEmFbj3exnwTMuCNDjPJ0hfEWDhyahbOaFRtpqrIAyTOcMv07fWA7VuiI/+nv1uG11cmPGqpNACw3H6ymknjIFx6VPSsLWseHZ2pDqFSGXQVaHNltHHEE8vDTVplZIrTLalAonkd14s1amsVxXuuul1OEW033qhJyRQ9F4bv4nH88nO2ZzQRF8RWf84pFWCMMjvtFb+yCl4bFT4Q3jzcPEFyPDfX+WV/Jt9lwglTzbwcRThGJP81H4jQ2ypjMlzkNRDlS2I3dLJ8ZSQLfUkaTfIA5ArQ1HPcW48/m9zsiUnPEBOfo896BykAoMCTkF3dyNTzlrYvY6e2uTcliYktkJOyd+QJsKQFgAG3Rz6bsQyYe/aDNuXQHHv6drkq9uPpHijtCXl8BVygzio9/IFJIowSrdwfBYN9W0ntumMXKX9966Du7VthC4LVqPJfRAuV2G5iOAGhHXJMo/a3PySthDSmsfAuA2wtJip2jqtBKqVaB/u3tr0cbQa+Wb+tgjBhjvkzEUAS/rrL+upnjLgaQsmaSw48qzFtRA7H5VZKlWm6I2lQ5J0fwbM3cJkzU5xAI2D+kizPBQPPWqKndqKgDIzUeNSxFvxHE1Ha2Gwou3O7BSwaykFEaG6JGW4=
+  file: server.tar.gz
+  on:
+    repo: ntfs32/proxygateway

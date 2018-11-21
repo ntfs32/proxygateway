@@ -13,27 +13,34 @@ export default store => next => action => {
     }
     return action.payload.then(res=>{
         let errno = _.toNumber(_.get(res, 'errno'))
-        // let status  = _.toNumber(_.get(res, 'status'))
         let msg = _.get(res, 'msg')
         switch (errno) {
             case 40100:
                 localStorage.clear()
                 window.location.pathname = '/login'
-            case 102:
-                localStorage.clear()
-                message.error(msg)
-                return store.dispatch({
+                store.dispatch({
                     type: action.type,
                     payload: {
                         info: {}
                     }
                 })
+                break
+            case 102:
+                localStorage.clear()
+                message.error(msg)
+                store.dispatch({
+                    type: action.type,
+                    payload: {
+                        info: {}
+                    }
+                })
+                break
             case 0:
-                return next(action)
+                next(action)
+                break
             default:
                 message.error(msg)
-                return
+                break
         }  
     })
-    return next(action)
 }
