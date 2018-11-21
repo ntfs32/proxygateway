@@ -31,7 +31,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    console.log(this.props)
     const userMenu = (
       <Menu>
         <Menu.Item key="0">

@@ -8,5 +8,5 @@ export default [
     thunk,
     errorMiddleware,
     promiseMiddleware(),
-    createLogger({ collapsed: true }),
+    process.env.NODE_ENV === 'production' || createLogger({ collapsed: true }),
 ]

@@ -7,15 +7,6 @@ import { withRouter, Link } from 'react-router-dom'
 import * as domainActions from '../../../../actions/domain'
 
 class DomainListPage extends Component {
-
-    constructor(props) {
-    super(props)
-        console.log(this.props)
-        this.state ={
-            collapsed: false,
-        }
-    }
-
     componentWillMount() {
         this.props.domainActions.getAllAction()
     }

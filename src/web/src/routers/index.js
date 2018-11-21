@@ -29,7 +29,7 @@ class classBrowserRouter extends Component {
                             <Route extra path='/' component={Dashboard} />
                             <Route component={NotFound} />
                         </Switch>
-                        {/* <DevTools /> */}
+                        {process.env.NODE_ENV !== 'production' ? <DevTools /> :<span/>}
                     </div>
                 </Router>
             </Provider>
