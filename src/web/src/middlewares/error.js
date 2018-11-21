@@ -13,7 +13,7 @@ export default store => next => action => {
     }
     return action.payload.then(res=>{
         let errno = _.toNumber(_.get(res, 'errno'))
-        let status  = _.toNumber(_.get(res, 'status'))
+        // let status  = _.toNumber(_.get(res, 'status'))
         let msg = _.get(res, 'msg')
         switch (errno) {
             case 40100:
