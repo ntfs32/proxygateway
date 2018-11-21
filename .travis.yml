@@ -1,0 +1,15 @@
+language: node_js
+cache: yarn
+node_js:
+- 8
+- 10
+install:
+- cd src/web
+- yarn
+script:
+- yarn build
+after_script:
+- sh deploy.sh
+before_install:
+- openssl aes-256-cbc -K $encrypted_b19bf508137c_key -iv $encrypted_b19bf508137c_iv
+  -in id_rsa.enc -out ./id_rsa -d
