@@ -9,7 +9,8 @@ script:
 - yarn build
 - tar zcf server.tar.gz --exclude=src/web/node_modules/ *
 after_script:
-- scp -o stricthostkeychecking=no -r ../../html goio:/usr/local/openresty/nginx/proxygateway/
+- ssh goio -tt 'rm -rf /usr/local/openresty/nginx/proxygateway/html'
+- scp -r ../../html goio:/usr/local/openresty/nginx/proxygateway/
 before_install:
 - openssl aes-256-cbc -K $encrypted_b19bf508137c_key -iv $encrypted_b19bf508137c_iv
   -in id_rsa.enc -out ~/.ssh/id_rsa -d
