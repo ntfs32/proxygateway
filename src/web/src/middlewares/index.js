@@ -4,9 +4,13 @@ import { createLogger } from 'redux-logger'
 
 import errorMiddleware from './error'
 
-export default [
+let middlewares = [
     thunk,
     errorMiddleware,
-    promiseMiddleware(),
-    process.env.NODE_ENV === 'production' || createLogger({ collapsed: true }),
+    promiseMiddleware()
 ]
+if (process.env.NODE_ENV !== 'production') {
+    middlewares.push(createLogger({ collapsed: true }))
+}
+
+export default middlewares
