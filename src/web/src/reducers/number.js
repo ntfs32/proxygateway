@@ -1,18 +1,14 @@
-import * as actionTypes from '../constants/number'
+import * as actionTypes from '../constants/ '
 
 
 let initialState = {
-    text: '',
-    count: 0
+    breadcrumbs: []
 }
 
-export default function number (state = initialState, action) {
+export default function breadcrumbs (state = initialState, action) {
     switch (action.type) {
-        case actionTypes.TEXT:
-            return {...state, text:action.text}
-        case actionTypes.COUNT:
-            let oldCount = state.count
-            return {...state, count: oldCount + action.count}
+        case actionTypes.BREADCRUM_UPDATE:
+            return {...state, breadcrumbs:action.breadcrumbs}
         default:
             return state
     }

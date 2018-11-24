@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Divider, Progress, Tooltip, Col, Row, Button } from 'antd'
+import { Table, Divider, Progress, Tooltip, Col, Row, Button, Modal } from 'antd'
 import { withRouter, Link } from 'react-router-dom'
 import _ from 'lodash'
 
@@ -22,6 +22,22 @@ class ServerByServiceID extends Component {
     deleteAction = (id) => {
         this.props.domainActions.removeServerAction(id).then(() => {
             this.props.domainActions.getServerAction(this.service_id)
+        })
+    }
+
+    showDeleteConfirm = (record) => {
+        Modal.confirm({
+            title: '确定删除以下内容?',
+            content: `后端服务器: ${record.protocol}${record.ip}:${record.port}`,
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk() {
+                this.deleteAction(record.id)
+            },
+            onCancel() {
+                console.log('Cancel')
+            }
         })
     }
 
@@ -71,7 +87,7 @@ class ServerByServiceID extends Component {
                 <span>
                     <Link to={`/domain/edit/server/${record.id}`}>编辑</Link>
                     <Divider type='vertical' />
-                    <a onClick={this.deleteAction.bind(this, record.id)} href='#delete'>删除</a>
+                    <a onClick={this.showDeleteConfirm.bind(this, record)} href='#delete'>删除</a>
                 </span>
             ),
         }]
